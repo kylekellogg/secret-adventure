@@ -2,6 +2,8 @@ require 'libs/middleclass'
 require 'libs/beetle'
 
 require 'splatter'
+require 'view/Image'
+require 'view/Animation'
 
 local splatter
 local background
@@ -35,29 +37,37 @@ function love.conf( t )
 end
 
 function love.load()
-	background = love.graphics.newImage( 'images/background.png' )
+	background = Image:new( love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5, nil, nil, 'images/background.png' )
 	splatter = Splatter:new()
+	test = Animation:new( math.random( love.graphics.getWidth() ), math.random( love.graphics.getHeight() ), nil, nil, 'images/explosion.png', 96, 96, Animation.DEFAULT_FPS )
+	test:setMode( Animation.LOOP )
+
 	beetle.load()
-	beetle.show()
+	beetle.setKey( 'x' )
 
 	splatterDebug = beetle.add( 'splatters', 0 )
 end
 
-function love.update()
+function love.update( dt )
+	test:update( dt )
 end
 
 function love.draw()
-	love.graphics.draw( background, 0, 0, 0, 1, 1, 0, 0 )
+	background:draw()
 	splatter:draw()
+	test:draw()
 	beetle.draw()
 end
 
 function love.mousepressed( x, y, button )
-	print( 'button : ' .. button )
-	if ( button == "l" ) then
+	if ( button == 'l' ) then
 		local w = math.random( 100 )
 		local h = math.random( 100 )
 		splatter:add( x, y, w, h )
 		beetle.update( splatterDebug, table.getn( splatter.splats ) )
 	end
+end
+
+function love.keyreleased( key )
+	beetle.key( key )
 end
