@@ -8,11 +8,11 @@ require 'states/TestState'
 require 'states/MainState'
 
 function love.conf( t )
-	t.title = "Secret Adventure!"        -- The title of the window the game is in (string)
-	t.author = "Kyle Kellogg, Dan Barron, Michael Schondek"        -- The author of the game (string)
+	t.title = 'Secret Adventure!'        -- The title of the window the game is in (string)
+	t.author = 'Kyle Kellogg, Dan Barron, Michael Schondek'        -- The author of the game (string)
 	t.url = nil                 -- The website of the game (string)
 	t.identity = nil            -- The name of the save directory (string)
-	t.version = "0.8.0"         -- The LÖVE version this game was made for (string)
+	t.version = '0.8.0'         -- The LÖVE version this game was made for (string)
 	t.console = false           -- Attach a console (boolean, Windows only)
 	t.release = false           -- Enable release mode (boolean)
 	t.screen.width = 800        -- The window width (number)
