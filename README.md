@@ -1,4 +1,4 @@
-secret-adventure
+Secret Adventure
 ================
 
 It's a secret adventure!
