@@ -14,7 +14,7 @@ function beetle.load()
 	dbg.names = {}
 	dbg.value = {}
 	dbg.font = love.graphics.newFont(14)
-	dbg.color = {255, 255, 255, 255}
+	dbg.color = {0, 0, 0, 255}
 	dbg.show = false
 	dbg.key = "d"
 end
@@ -46,6 +46,7 @@ end
 function beetle.add(name, contents)
 	table.insert(dbg.names, tostring(name) .. " : ")
 	table.insert(dbg.value, tostring(contents))
+	return table.getn( dbg.value )
 end
 
 function beetle.remove(position)
@@ -60,7 +61,7 @@ end
 function beetle.draw()
 	if dbg.show then
 		love.graphics.setFont(dbg.font)
-		love.graphics.setColor(dbg.color[3], dbg.color[2], dbg.color[1], 255)
+		love.graphics.setColor(dbg.color[1], dbg.color[2], dbg.color[3], 255)
 		love.graphics.print("Beetle Debug Screen :", dbg.x, dbg.y)
 		love.graphics.setColor(dbg.color)
 		
