@@ -17,7 +17,7 @@ function Image:update()
 end
 
 function Image:draw()
-	love.graphics.draw( self._image, self.x, self.y, math.rad( self.rotation ), self.scaleX, self.scaleY, self.width * 0.5, self.height * 0.5 )
+	love.graphics.draw( self._image, self.x, self.y, math.rad( self.rotation ), self.scaleX, self.scaleY, 0, 0 )
 end
 
 function Image:__tostring()

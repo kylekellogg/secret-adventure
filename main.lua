@@ -57,7 +57,19 @@ function love.mousepressed( x, y, button )
 	Gamestate.mousepressed( x, y, button )
 end
 
-function love.keyreleased( key )
-	Gamestate.keyreleased( key )
+function love.mousereleased( x, y, button )
+	Gamestate.mousereleased( x, y, button )
+end
+
+function love.keypressed( key, code )
+	Gamestate.keypressed( key, code )
+end
+
+function love.keyreleased( key, code )
+	Gamestate.keyreleased( key, code )
 	beetle.key( key )
+end
+
+function love.focus( f )
+	Gamestate.focus( f )
 end
