@@ -1,15 +1,11 @@
+require 'libs/Beetle'
 require 'libs/middleclass'
-require 'libs/beetle'
+Gamestate = require 'libs/hump/gamestate'
+Signal = require 'libs/hump/signal'
 
-require 'splatter'
-require 'view/Image'
-require 'view/Animation'
-
-local splatter
-local background
-local test
-
-local splatterDebug
+require 'States'
+require 'states/TestState'
+require 'states/MainState'
 
 function love.conf( t )
 	t.title = "Secret Adventure!"        -- The title of the window the game is in (string)
@@ -37,37 +33,31 @@ function love.conf( t )
 end
 
 function love.load()
-	background = Image:new( love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5, nil, nil, 'images/background.png' )
-	splatter = Splatter:new()
-	test = Animation:new( math.random( love.graphics.getWidth() ), math.random( love.graphics.getHeight() ), nil, nil, 'images/explosion.png', 96, 96, Animation.DEFAULT_FPS )
-	test:setMode( Animation.LOOP )
-
 	beetle.load()
 	beetle.setKey( 'x' )
+	
+	States:add( TestState:new( 'test', beetle, Signal ) )
+	States:add( MainState:new( 'menu', beetle, Signal ) )
 
-	splatterDebug = beetle.add( 'splatters', 0 )
+	Signal.register( 'switch_to_menu', function() Gamestate.switch( States:get( 'menu' ) ) end )
+	
+	Gamestate.switch( States:get( 'test' ) )
 end
 
 function love.update( dt )
-	test:update( dt )
+	Gamestate.update( dt )
 end
 
 function love.draw()
-	background:draw()
-	splatter:draw()
-	test:draw()
+	Gamestate.draw()
 	beetle.draw()
 end
 
 function love.mousepressed( x, y, button )
-	if ( button == 'l' ) then
-		local w = math.random( 100 )
-		local h = math.random( 100 )
-		splatter:add( x, y, w, h )
-		beetle.update( splatterDebug, table.getn( splatter.splats ) )
-	end
+	Gamestate.mousepressed( x, y, button )
 end
 
 function love.keyreleased( key )
+	Gamestate.keyreleased( key )
 	beetle.key( key )
 end
