@@ -17,7 +17,7 @@ end
 function TestState:init()
 	self.background = Image:new( 0, 0, nil, nil, 'images/background.png' )
 	self.splatter = Splatter:new()
-	self.test = Animation:new( math.random( love.graphics.getWidth() ), math.random( love.graphics.getHeight() ), nil, nil, 'images/explosion.png', 96, 96, Animation.DEFAULT_FPS )
+	self.test = Animation:new( love.graphics.getWidth() * 0.5 - 48, love.graphics.getHeight() * 0.5 - 48, nil, nil, 'images/explosion.png', 96, 96, Animation.DEFAULT_FPS )
 	self.test:setMode( Animation.LOOP )
 	self.splatterDebug = self.beetle.add( 'splatters', 0 )
 end

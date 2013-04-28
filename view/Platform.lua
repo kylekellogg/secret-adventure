@@ -84,7 +84,7 @@ function Platform:initialize( x, y, width, height, src, mode, world )
 	self.fixture:setUserData( 'platform-' .. types[ self:getMode() ] )
 
 	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
-		self.fixture:setRestitution( 0.5 )
+		self.fixture:setRestitution( 1.0 )
 	elseif self.mode == 7 or self.mode > 11 then
 		--	
 	else
