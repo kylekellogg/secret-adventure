@@ -104,7 +104,7 @@ function MainState.beginContact( a, b, coll )
 		elseif x < 0 then
 			x = math.min( x * 0.5, -5 )
 		end
-		bbody:applyForce( x * 0.5, 0 )
+		bbody:applyLinearImpulse( x * 0.5, 0 )
 	else
 	end
 end
