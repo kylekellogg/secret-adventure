@@ -42,6 +42,9 @@ function love.load()
 	Signal.register( 'switch_to_menu', function() Gamestate.switch( States:get( 'menu' ) ) end )
 	
 	Gamestate.switch( States:get( 'test' ) )
+
+	love.graphics.setBackgroundColor( 255, 255, 255 )
+	love.graphics.setMode( 600, 900, false, true, 0) --set the window dimensions to 650 by 650
 end
 
 function love.update( dt )

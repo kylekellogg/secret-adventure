@@ -19,13 +19,11 @@ Platform.static.MOVING_V_BOUNCING	= 11
 Platform.static.MOVING_H_SLIPPING	= 12
 Platform.static.MOVING_V_SLIPPING	= 13
 
-function Platform:initialize( x, y, width, height, src, mode )
+function Platform:initialize( x, y, width, height, src, mode, world )
 	Image.initialize( self, x, y, width, height, src )
 
-	self.scaleX = self.width / self._image:getWidth();
-	self.scaleY = self.height / self._image:getHeight();
-
-	print( 'scales x and y: ' .. tostring( self.scaleX ) .. ', ' .. tostring( self.scaleY ) )
+	self.scaleX = self.width / self._image:getWidth()
+	self.scaleY = self.height / self._image:getHeight()
 
 	self.updates = {
 		--	STATIC
@@ -57,6 +55,21 @@ function Platform:initialize( x, y, width, height, src, mode )
 	}
 
 	self:setMode( mode or Platform.STATIC )
+
+	local bodyType = 'static'
+	if ( self.mode == 5 or self.mode == 6 or self.mode > 9 ) then
+		bodyType = 'dynamic'
+	end
+
+	self.world = world
+	self.body = love.physics.newBody( self.world, self.x, self.y, 'static' )
+	self.body:setAngle( math.rad( 45 ) )
+	self.shape = love.physics.newRectangleShape( self.x, self.y, self.width, self.height )
+	self.fixture = love.physics.newFixture( self.body, self.shape, 5 )
+
+	if ( self.mode == 2 or self.mode == 10 or self.mode == 11 ) then
+		self.fixture:setRestitution( 0.6)
+	end
 end
 
 function Platform:update( dt )
@@ -66,7 +79,9 @@ function Platform:update( dt )
 end
 
 function Platform:draw()
-	Image.draw( self )
+	--Image.draw( self )
+	love.graphics.setColor( 255, 0, 0 )
+	love.graphics.polygon( 'fill', self.body:getWorldPoints( self.shape:getPoints() ) )
 end
 
 function Platform:setMode( mode )
