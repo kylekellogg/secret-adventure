@@ -73,12 +73,19 @@ function MainState:leave()
 end
 
 function MainState:update( dt )
+	if self.player.dirty == true then
+		self.player.dirty = false
+		do
+			self.player:generateFixture()
+		end
+	end
+
 	if love.keyboard.isDown( 'a' ) or love.keyboard.isDown( 'left' ) then
-		self.player.body:applyForce( -1000, 0 )
+		self.player.body:applyForce( -1000 * self.player:getMassModifier(), 0 )
 	end
 
 	if love.keyboard.isDown( 'd' ) or love.keyboard.isDown( 'right' ) then
-		self.player.body:applyForce( 1000, 0 )
+		self.player.body:applyForce( 1000 * self.player:getMassModifier(), 0 )
 	end
 
 	self.player:update( dt )
@@ -106,39 +113,34 @@ end
 
 function MainState.beginContact( a, b, coll )
 	local atype = a:getUserData()
-	local abody = a:getBody()
 	local btype = b:getUserData()
-	local bbody = b:getBody()
-	local x, y
+	local loseMass = true
+	local loseMassMultiplier = 1.0
 
 	override = false
 	Signal.emit( 'reset_player_jump' )
+	Signal.emit( 'player_sticking', 0.5 )
 	
 	if atype == 'left' or atype == 'right' then
 		--	
+		loseMass = false
 	elseif atype == 'bottom' then
 		--	
+		loseMass = false
 	end
 
 	if atype == 'platform-slipping' or atype == 'platform-moving-h-slipping' or atype == 'platform-moving-v-slipping' then
-		x, y = bbody:getLinearVelocity()
-		if x > 0 then
-			x = math.min( x * 1.5, 100 )
-		elseif x < 0 then
-			x = math.max( x * 1.5, -100 )
-		end
-		bbody:applyLinearImpulse( x, 0 )
+		Signal.emit( 'player_sticking', 0.0 )
 	elseif atype == 'platform-sticking' then
-		x, y = bbody:getLinearVelocity()
-		if x > 0 then
-			x = math.max( x * 0.5, 5 )
-		elseif x < 0 then
-			x = math.min( x * 0.5, -5 )
-		end
-		bbody:applyLinearImpulse( x * 0.5, 0 )
+		loseMassMultiplier = 1.5
+		Signal.emit( 'player_sticking', 1.0 )
 	elseif atype == 'platform-bouncing' or atype == 'platform-moving-h-bouncing' or atype == 'platform-moving-v-bouncing' then
 		override = true
 	else
+	end
+
+	if loseMass == true then
+		Signal.emit( 'player_lose_mass', loseMassMultiplier )
 	end
 end
 
