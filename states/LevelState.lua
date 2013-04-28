@@ -14,7 +14,6 @@ end
 --	Called only once
 function LevelState:init()
 	self.background = Image:new( 0, 0, nil, nil, 'images/background.png' )
-	self.platforms = {}
 end
 
 --	Called every time switch()ing to state
@@ -27,16 +26,5 @@ function LevelState:leave()
 	-- 
 end
 
-function LevelState:update( dt )
-	for _,p in pairs(self.platforms) do
-		p:update( dt )
-	end
-end
-
 function LevelState:draw()
-	self.background:draw()
-
-	for _,p in pairs(self.platforms) do
-		p:draw()
-	end
 end

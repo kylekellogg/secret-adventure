@@ -15,9 +15,11 @@ end
 function LevelOneState:init()
   LevelState:init()
 
+	love.physics.setMeter( 60 )
+	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
+
 	self.platforms = {
-		Platform:new( ( love.graphics.getWidth() / 2 ) - 50, love.graphics.getHeight() - 100, 100, 25, 'images/platform.png' ),
-		Platform:new( ( love.graphics.getWidth() / 2 ) + 100, love.graphics.getHeight() - 200, 100, 25, 'images/platform.png' ),
+		Platform:new( 100, 60, 60, 60, 'images/platform.png', Platform.STATIC, self.world )
 	}
 end
 
@@ -32,9 +34,10 @@ function LevelOneState:leave()
 end
 
 function LevelOneState:update( dt )
-	for _,p in pairs(self.platforms) do
-		p:update( dt )
-	end
+	self.world:update( dt )
+	--for _,p in pairs(self.platforms) do
+		--p:update( dt )
+	--end
 end
 
 function LevelOneState:draw()
