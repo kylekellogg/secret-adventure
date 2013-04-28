@@ -24,8 +24,8 @@ function LevelOneState:init()
   local halfScH = scH / 2
 
 	self.platforms = {
-		Platform:new(  halfScW - 50, scH - 100, 100, 25, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 0, 0, 100, 25, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new(  halfScW - 60, scH - 180, 120, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( halfScW + 90, scH - 280, 120, 30, 'images/platform.png', Platform.STATIC, self.world ),
 	}
 end
 
