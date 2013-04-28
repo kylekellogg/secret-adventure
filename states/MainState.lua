@@ -20,15 +20,17 @@ function MainState:init()
 	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
 
 	self.platforms = {
-		Platform:new( 0, 0, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 60, 60, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new(   0,   0, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new(  60,  60, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 120, 120, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 180, 180, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 240, 240, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 300, 300, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 360, 360, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 420, 420, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 480, 480, 60, 30, 'images/platform.png', Platform.STATIC, self.world )
+		Platform:new( 480, 480, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 540, 540, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 570, 570, 60, 30, 'images/platform.png', Platform.STATIC, self.world )
 	}
 
 	self.player = Player:new( 30, 0, 25, nil, self.world )
@@ -36,22 +38,22 @@ function MainState:init()
 	leftEdge = {}
 	leftEdge.b = love.physics.newBody( self.world, 0, 0, 'static' )
 	leftEdge.s = love.physics.newEdgeShape( 0, 0, 0, 600 );
-	leftEdge.f = love.physics.newFixture( leftEdge.b, leftEdge.s )
+	leftEdge.f = love.physics.newFixture( leftEdge.b, leftEdge.s, 100 )
 
 	rightEdge = {}
 	rightEdge.b = love.physics.newBody( self.world, 400, 0, 'static' )
 	rightEdge.s = love.physics.newEdgeShape( 400, 0, 400, 600 );
-	rightEdge.f = love.physics.newFixture( rightEdge.b, rightEdge.s )
+	rightEdge.f = love.physics.newFixture( rightEdge.b, rightEdge.s, 100 )
 
 	bottomEdge = {}
 	bottomEdge.b = love.physics.newBody( self.world, 0, 300, 'static' )
 	bottomEdge.s = love.physics.newEdgeShape( 0, 300, 800, 300 );
-	bottomEdge.f = love.physics.newFixture( bottomEdge.b, bottomEdge.s )
+	bottomEdge.f = love.physics.newFixture( bottomEdge.b, bottomEdge.s, 100 )
 end
 
 --	Called every time switch()ing to state
 function MainState:enter( previous )
-	self.player.body:applyForce( 50, 0 )
+	self.player.body:applyForce( 500, 0 )
 end
 
 --	Called every time switch()ing away from state
@@ -76,10 +78,8 @@ function MainState:draw()
 
 	self.player:draw()
 
-	love.graphics.setColor( 0, 255, 0 )
-	love.graphics.line( leftEdge.b:getWorldPoints( leftEdge.s:getPoints() ) )
-	love.graphics.setColor( 0, 0, 255 )
-	love.graphics.line( rightEdge.b:getWorldPoints( rightEdge.s:getPoints() ) )
 	love.graphics.setColor( 255, 0, 0 )
+	love.graphics.line( leftEdge.b:getWorldPoints( leftEdge.s:getPoints() ) )
+	love.graphics.line( rightEdge.b:getWorldPoints( rightEdge.s:getPoints() ) )
 	love.graphics.line( bottomEdge.b:getWorldPoints( bottomEdge.s:getPoints() ) )
 end

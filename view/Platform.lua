@@ -63,7 +63,6 @@ function Platform:initialize( x, y, width, height, src, mode, world )
 
 	self.world = world
 	self.body = love.physics.newBody( self.world, self.width * 0.5, self.height*0.5, 'static' )
-	--self.body:setAngle( math.rad( math.random( 45 ) ) )
 	self.shape = love.physics.newRectangleShape( self.x, self.y, self.width, self.height )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 5 )
 
