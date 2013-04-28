@@ -43,7 +43,7 @@ function TestState:draw()
 end
 
 function TestState:mousepressed( x, y, button )
-	if ( button == 'l' ) then
+	if button == 'l' then
 		local w = math.random( 100 )
 		local h = math.random( 100 )
 		self.splatter:add( x, y, w, h )
@@ -52,7 +52,7 @@ function TestState:mousepressed( x, y, button )
 end
 
 function TestState:keyreleased( key )
-	if ( key == 'm' ) then
+	if key == 'm' then
 		self.signal.emit( 'switch_to_menu' )
 	end
 end

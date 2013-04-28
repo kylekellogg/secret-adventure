@@ -66,8 +66,12 @@ function Platform:initialize( x, y, width, height, src, mode, world )
 	self.shape = love.physics.newRectangleShape( 0, 0, self.width, self.height )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 5 )
 
-	if ( self.mode == 2 or self.mode == 10 or self.mode == 11 ) then
-		self.fixture:setRestitution( 0.6)
+	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
+		self.fixture:setRestitution( 0.5 )
+	elseif self.mode == 7 or self.mode > 11 then
+		--	
+	else
+		--	
 	end
 end
 
@@ -79,7 +83,13 @@ end
 
 function Platform:draw()
 	--Image.draw( self )
-	love.graphics.setColor( 255, 0, 0 )
+	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
+		love.graphics.setColor( 0, 255, 0 )
+	elseif self.mode == 7 or self.mode > 11 then
+		love.graphics.setColor( 0, 0, 255 )
+	else
+		love.graphics.setColor( 255, 0, 0 )
+	end
 	love.graphics.polygon( 'fill', self.body:getWorldPoints( self.shape:getPoints() ) )
 end
 

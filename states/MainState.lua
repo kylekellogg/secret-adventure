@@ -22,13 +22,13 @@ function MainState:init()
 	self.platforms = {
 		Platform:new(  60,  60, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 120, 120, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 180, 180, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 240, 240, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 180, 180, 60, 30, 'images/platform.png', Platform.BOUNCING, self.world ),
+		Platform:new( 240, 240, 60, 30, 'images/platform.png', Platform.BOUNCING, self.world ),
 		Platform:new( 300, 300, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 360, 360, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 420, 420, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 480, 480, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 540, 540, 60, 30, 'images/platform.png', Platform.STATIC, self.world )
+		Platform:new( 420, 420, 120, 30, 'images/platform.png', Platform.SLIPPING, self.world ),
+		Platform:new( 540, 480, 120, 30, 'images/platform.png', Platform.SLIPPING, self.world ),
+		Platform:new( 660, 540, 120, 30, 'images/platform.png', Platform.SLIPPING, self.world )
 	}
 
 	self.player = Player:new( 90, 0, 25, nil, self.world )
@@ -61,15 +61,9 @@ end
 
 function MainState:update( dt )
 	self.world:update( dt )
-
-	--for _,p in pairs(self.platforms) do
-	--	p:update( dt )
-	--end
 end
 
 function MainState:draw()
-	--self.background:draw()
-
 	for _,p in pairs(self.platforms) do
 		p:draw()
 	end

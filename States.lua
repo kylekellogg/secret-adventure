@@ -14,7 +14,6 @@ end
 
 function States.static:get( name )
 	for i,v in pairs(States.states) do
-		print( 'Testing ' .. tostring( v.name ) .. '... Looking for ' .. name )
 		if v.name == name then
 			do return v end
 		end
