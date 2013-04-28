@@ -41,13 +41,13 @@ function MainState:init()
 	leftEdge.f = love.physics.newFixture( leftEdge.b, leftEdge.s, 100 )
 
 	rightEdge = {}
-	rightEdge.b = love.physics.newBody( self.world, 400, 0, 'static' )
-	rightEdge.s = love.physics.newEdgeShape( 400, 0, 400, 600 );
+	rightEdge.b = love.physics.newBody( self.world, 800, 0, 'static' )
+	rightEdge.s = love.physics.newEdgeShape( 0, 0, 0, 600 );
 	rightEdge.f = love.physics.newFixture( rightEdge.b, rightEdge.s, 100 )
 
 	bottomEdge = {}
-	bottomEdge.b = love.physics.newBody( self.world, 0, 300, 'static' )
-	bottomEdge.s = love.physics.newEdgeShape( 0, 300, 800, 300 );
+	bottomEdge.b = love.physics.newBody( self.world, 0, 600, 'static' )
+	bottomEdge.s = love.physics.newEdgeShape( 0, 0, 800, 0 );
 	bottomEdge.f = love.physics.newFixture( bottomEdge.b, bottomEdge.s, 100 )
 end
 
