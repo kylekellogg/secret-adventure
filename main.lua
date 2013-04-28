@@ -7,6 +7,9 @@ require 'States'
 require 'states/TestState'
 require 'states/MainState'
 require 'states/LevelOneState'
+require 'states/LevelTwoState'
+require 'states/LevelThreeState'
+require 'states/LevelFourState'
 
 function love.load()
 	beetle.load()
@@ -15,9 +18,15 @@ function love.load()
 	States:add( TestState:new( 'test', beetle, Signal ) )
 	States:add( MainState:new( 'menu', beetle, Signal ) )
 	States:add( LevelOneState:new( 'levelOne', beetle, Signal ) )
+	States:add( LevelTwoState:new( 'levelTwo', beetle, Signal ) )
+	States:add( LevelThreeState:new( 'levelThree', beetle, Signal ) )
+	States:add( LevelFourState:new( 'levelFour', beetle, Signal ) )
 
 	Signal.register( 'switch_to_menu', function() Gamestate.switch( States:get( 'menu' ) ) end )
 	Signal.register( 'switch_to_level_one', function() Gamestate.switch( States:get( 'levelOne' ) ) end )
+	Signal.register( 'switch_to_level_two', function() Gamestate.switch( States:get( 'levelTwo' ) ) end )
+	Signal.register( 'switch_to_level_three', function() Gamestate.switch( States:get( 'levelThree' ) ) end )
+	Signal.register( 'switch_to_level_four', function() Gamestate.switch( States:get( 'levelFour' ) ) end )
 	
 	Gamestate.switch( States:get( 'test' ) )
 
