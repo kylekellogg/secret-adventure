@@ -19,8 +19,8 @@ Platform.static.MOVING_V_BOUNCING	= 11
 Platform.static.MOVING_H_SLIPPING	= 12
 Platform.static.MOVING_V_SLIPPING	= 13
 
-function Platform:initialize( x, y, width, height, src, mode, world )
-	Image.initialize( self, x, y, width, height, src )
+function Platform:initialize( x, y, mode, world, width, height )
+	Image.initialize( self, x, y, width, height, 'images/platform.png' )
 
 	self.scaleX = self.width / self._image:getWidth()
 	self.scaleY = self.height / self._image:getHeight()

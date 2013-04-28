@@ -29,30 +29,30 @@ function MainState:init()
 	--						  about 150px at -1000 force
 
 	self.platforms = {
-		Platform:new(  0,  60, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 60, 120, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 120, 180, 60, 30, 'images/platform.png', Platform.BOUNCING, self.world ),
-		Platform:new( 180, 240, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 240, 300, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 300, 360, 120, 30, 'images/platform.png', Platform.SLIPPING, self.world ),
-		Platform:new( 420, 420, 120, 30, 'images/platform.png', Platform.SLIPPING, self.world ),
-		Platform:new( 480, 540, 120, 30, 'images/platform.png', Platform.STICKING, self.world ),
-		--Platform:new( 0, 592, 120, 1, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 0, 567, 120, 1, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 0, 668, 120, 1, 'images/platform.png', Platform.STATIC, self.world )
+		Platform:new(   0,  60, Platform.STATIC, self.world ),
+		Platform:new(  60, 120, Platform.STATIC, self.world ),
+		Platform:new( 120, 180, Platform.BOUNCING, self.world ),
+		Platform:new( 180, 240, Platform.STATIC, self.world ),
+		Platform:new( 240, 300, Platform.STATIC, self.world ),
+		Platform:new( 300, 360, Platform.SLIPPING, self.world ),
+		Platform:new( 420, 420, Platform.SLIPPING, self.world ),
+		Platform:new( 480, 540, Platform.STICKING, self.world ),
+		--Platform:new( 0, 592, Platform.STATIC, self.world ),
+		Platform:new( 15, 567, Platform.STATIC, self.world, 90, 30 ),
+		Platform:new( 0, 668, Platform.STATIC, self.world )
 	}
 
 	self.player = Player:new( 90, 0, 25, nil, self.world, self.signal )
 
 	leftEdge = {}
-	leftEdge.b = love.physics.newBody( self.world, 0, 0, 'static' )
-	leftEdge.s = love.physics.newEdgeShape( 0, 0, 0, love.graphics.getHeight() );
+	leftEdge.b = love.physics.newBody( self.world, 0, -love.graphics.getHeight(), 'static' )
+	leftEdge.s = love.physics.newEdgeShape( 0, 0, 0, love.graphics.getHeight() * 2 );
 	leftEdge.f = love.physics.newFixture( leftEdge.b, leftEdge.s, 100 )
 	leftEdge.f:setUserData( 'left' )
 
 	rightEdge = {}
-	rightEdge.b = love.physics.newBody( self.world, love.graphics.getWidth(), 0, 'static' )
-	rightEdge.s = love.physics.newEdgeShape( 0, 0, 0, love.graphics.getHeight() );
+	rightEdge.b = love.physics.newBody( self.world, love.graphics.getWidth(), -love.graphics.getHeight(), 'static' )
+	rightEdge.s = love.physics.newEdgeShape( 0, 0, 0, love.graphics.getHeight() * 2 );
 	rightEdge.f = love.physics.newFixture( rightEdge.b, rightEdge.s, 100 )
 	rightEdge.f:setUserData( 'right' )
 
@@ -97,6 +97,10 @@ function MainState:keypressed( key )
 	if key == 'w' or key == 'up' then
 		self.signal.emit( 'player_jump', override )
 		override = false
+	end
+
+	if key == 'r' then
+		self.player.body:setPosition( 90, 0 )
 	end
 end
 
