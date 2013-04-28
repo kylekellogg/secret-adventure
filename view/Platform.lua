@@ -25,33 +25,49 @@ function Platform:initialize( x, y, width, height, src, mode, world )
 	self.scaleX = self.width / self._image:getWidth()
 	self.scaleY = self.height / self._image:getHeight()
 
+	local types = {
+		'static',
+		'bouncing',
+		'cleaning',
+		'ending',
+		'moving-h',
+		'moving-v',
+		'slipping',
+		'sticking',
+		'teleporting',
+		'moving-h-bouncing',
+		'moving-v-bouncing',
+		'moving-h-slipping',
+		'moving-v-slipping'
+	}
+
 	self.updates = {
 		--	STATIC
-		function() return 'static' end,
+		function() return types[ self:getMode() ] end,
 		--	BOUNCING
-		function() return 'bouncing' end,
+		function() return types[ self:getMode() ] end,
 		--	CLEANING
-		function() return 'cleaning' end,
+		function() return types[ self:getMode() ] end,
 		--	ENDING
-		function() return 'ending' end,
+		function() return types[ self:getMode() ] end,
 		--	MOVING_H
-		function() return 'moving horizontal' end,
+		function() return types[ self:getMode() ] end,
 		--	MOVING_V
-		function() return 'moving vertical' end,
+		function() return types[ self:getMode() ] end,
 		--	SLIPPING
-		function() return 'slipping' end,
+		function() return types[ self:getMode() ] end,
 		--	STICKING
-		function() return 'sticking' end,
+		function() return types[ self:getMode() ] end,
 		--	TELEPORTING
-		function() return 'teleporting' end,
+		function() return types[ self:getMode() ] end,
 		--	MOVING_H_BOUNCING
-		function() return 'moving horizontal, bouncing' end,
+		function() return types[ self:getMode() ] end,
 		--	MOVING_V_BOUNCING
-		function() return 'moving vertical, bouncing' end,
+		function() return types[ self:getMode() ] end,
 		--	MOVING_H_SLIPPING
-		function() return 'moving horizontal, slipping' end,
+		function() return types[ self:getMode() ] end,
 		--	MOVING_V_BOUNCING
-		function() return 'moving vertical, slipping' end
+		function() return types[ self:getMode() ] end
 	}
 
 	self:setMode( mode or Platform.STATIC )
@@ -65,6 +81,7 @@ function Platform:initialize( x, y, width, height, src, mode, world )
 	self.body = love.physics.newBody( self.world, self.x + (self.width * 0.5), self.y + (self.height * 0.5), 'static' )--self.width * 0.5, self.height * 0.5, 'static' )
 	self.shape = love.physics.newRectangleShape( 0, 0, self.width, self.height )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 5 )
+	self.fixture:setUserData( 'platform-' .. types[ self:getMode() ] )
 
 	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
 		self.fixture:setRestitution( 0.5 )
@@ -87,6 +104,8 @@ function Platform:draw()
 		love.graphics.setColor( 0, 255, 0 )
 	elseif self.mode == 7 or self.mode > 11 then
 		love.graphics.setColor( 0, 0, 255 )
+	elseif self.mode == 8 then
+		love.graphics.setColor( 255, 255, 0 )
 	else
 		love.graphics.setColor( 255, 0, 0 )
 	end

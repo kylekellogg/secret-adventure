@@ -21,7 +21,6 @@ function love.load()
 	Gamestate.switch( States:get( 'test' ) )
 
 	love.graphics.setBackgroundColor( 255, 255, 255 )
-	love.graphics.setMode( 800, 600, false, true, 0 )
 end
 
 function love.update( dt )
