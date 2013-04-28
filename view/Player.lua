@@ -9,9 +9,9 @@ function Player:initialize( x, y, width, height, world )
 
 	self.world = world
 	self.body = love.physics.newBody( self.world, self.x, self.y, 'dynamic' )
-	self.shape = love.physics.newCircleShape( self.x, self.y, self.width )
+	self.shape = love.physics.newCircleShape( 0, 0, self.width )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
-	self.fixture:setRestitution( math.random( 25, 75 ) / 100 )
+	self.fixture:setRestitution( 0.34 )
 end
 
 function Player:update( dt )

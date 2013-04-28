@@ -20,7 +20,6 @@ function MainState:init()
 	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
 
 	self.platforms = {
-		Platform:new(   0,   0, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new(  60,  60, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 120, 120, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 180, 180, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
@@ -29,11 +28,10 @@ function MainState:init()
 		Platform:new( 360, 360, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 420, 420, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
 		Platform:new( 480, 480, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 540, 540, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 570, 570, 60, 30, 'images/platform.png', Platform.STATIC, self.world )
+		Platform:new( 540, 540, 60, 30, 'images/platform.png', Platform.STATIC, self.world )
 	}
 
-	self.player = Player:new( 30, 0, 25, nil, self.world )
+	self.player = Player:new( 90, 0, 25, nil, self.world )
 
 	leftEdge = {}
 	leftEdge.b = love.physics.newBody( self.world, 0, 0, 'static' )
@@ -53,7 +51,7 @@ end
 
 --	Called every time switch()ing to state
 function MainState:enter( previous )
-	self.player.body:applyForce( 500, 0 )
+	self.player.body:applyForce( 1000, -20000 )
 end
 
 --	Called every time switch()ing away from state
@@ -77,9 +75,4 @@ function MainState:draw()
 	end
 
 	self.player:draw()
-
-	love.graphics.setColor( 255, 0, 0 )
-	love.graphics.line( leftEdge.b:getWorldPoints( leftEdge.s:getPoints() ) )
-	love.graphics.line( rightEdge.b:getWorldPoints( rightEdge.s:getPoints() ) )
-	love.graphics.line( bottomEdge.b:getWorldPoints( bottomEdge.s:getPoints() ) )
 end
