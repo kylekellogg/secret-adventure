@@ -19,7 +19,7 @@ function LevelOneState:init()
 	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
 
 	self.platforms = {
-		Platform:new( 100, 60, 60, 60, 'images/platform.png', Platform.STATIC, self.world )
+		Platform:new( 0, 0, 100, 25, 'images/platform.png', Platform.STATIC, self.world )
 	}
 end
 
