@@ -16,20 +16,27 @@ end
 function MainState:init()
 	self.background = Image:new( 0, 0, nil, nil, 'images/background.png' )
 
-	love.physics.setMeter( 60 )
+	love.physics.setMeter( 30 )
 	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
 
 	self.platforms = {
-		Platform:new( 60, 60, 60, 60, 'images/platform.png', Platform.STATIC, self.world ),
-		Platform:new( 60, 120, 120, 120, 'images/platform.png', Platform.STATIC, self.world )
+		Platform:new( 0, 30, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 60, 90, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 120, 150, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 180, 210, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 240, 270, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 300, 330, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 360, 390, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 420, 450, 60, 30, 'images/platform.png', Platform.STATIC, self.world ),
+		Platform:new( 480, 510, 60, 30, 'images/platform.png', Platform.STATIC, self.world )
 	}
 
-	self.player = Player:new( 60, 0, 25, nil, self.world )
+	self.player = Player:new( 30, 0, 25, nil, self.world )
 end
 
 --	Called every time switch()ing to state
 function MainState:enter( previous )
-	--	
+	self.player.body:applyForce( 50, 0 )
 end
 
 --	Called every time switch()ing away from state
