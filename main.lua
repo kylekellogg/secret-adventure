@@ -17,6 +17,7 @@ function love.load()
 	States:add( LevelOneState:new( 'levelOne', beetle, Signal ) )
 
 	Signal.register( 'switch_to_menu', function() Gamestate.switch( States:get( 'menu' ) ) end )
+	Signal.register( 'switch_to_level_one', function() Gamestate.switch( States:get( 'levelOne' ) ) end )
 	
 	Gamestate.switch( States:get( 'test' ) )
 

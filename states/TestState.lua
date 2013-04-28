@@ -55,4 +55,8 @@ function TestState:keyreleased( key )
 	if key == 'm' then
 		self.signal.emit( 'switch_to_menu' )
 	end
+
+	if ( key == '1' ) then
+		self.signal.emit( 'switch_to_level_one' )
+	end
 end
