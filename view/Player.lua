@@ -1,5 +1,6 @@
 require 'libs/middleclass'
 
+require 'view/Animation'
 require 'view/DisplayObject'
 
 Player = class( "Player", DisplayObject )
@@ -22,6 +23,16 @@ function Player:initialize( x, y, width, height, world, signal )
 	self.previousY = self.body:getY()
 
 	self.dirty = false
+
+	-- 0: jump
+	-- 1: land 1
+	-- 2: land 2
+	-- 3: blink
+	-- 4: normal
+	-- 5: hit
+	self.anim = Animation:new( self.x, self.y, 355, 319, 'images/cat.png', 355, 319, 0 )
+	self.anim:seek( 4 )
+	self.anim:stop()
 
 	self.signal.register( 'player_jump', function( override )
 		if (self.jumping == false and self.ableToJump == true) or override == true then
@@ -53,6 +64,11 @@ end
 function Player:update( dt )
 	DisplayObject.update( self, dt )
 
+	self.anim:scale( (self.shape:getRadius() / self.anim.width) * (1.0 + self:getMassModifier()) )
+	self.anim.x = self.body:getX() - ((self.anim.width * self.anim.scaleX) * 0.5)
+	self.anim.y = self.body:getY() - ((self.anim.height * self.anim.scaleY) * 0.5)
+	self.anim:update( dt )
+
 	if self.previousY == self.body:getY() then
 		self.ableToJump = true
 	else
@@ -65,8 +81,11 @@ end
 function Player:draw()
 	DisplayObject.draw( self )
 
-	love.graphics.setColor( 0, 0, 0 )
-	love.graphics.circle( 'fill', self.body:getX(), self.body:getY(), self.shape:getRadius() )
+	--love.graphics.setColor( 0, 0, 0, 255 )
+	--love.graphics.circle( 'fill', self.body:getX(), self.body:getY(), self.shape:getRadius() )
+
+	love.graphics.setColor( 255, 255, 255, 255 )
+	self.anim:draw()
 end
 
 function Player:generateFixture()

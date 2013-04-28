@@ -24,7 +24,8 @@ function Animation:update( dt )
 end
 
 function Animation:draw()
-	self._anim:draw( self.x, self.y )
+	print( 'scale x: ' .. self.scaleX .. ', scale y: ' .. self.scaleY )
+	self._anim:draw( self.x, self.y, self.rotation, self.scaleX, self.scaleY )
 end
 
 function Animation:add( x, y, w, h, delay )
