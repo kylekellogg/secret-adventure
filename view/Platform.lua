@@ -1,5 +1,6 @@
 require 'libs/middleclass'
 
+require 'view/Animation'
 require 'view/Image'
 
 Platform = class( 'Platform', Image )
@@ -72,13 +73,23 @@ function Platform:initialize( x, y, mode, world, width, height )
 
 	self:setMode( mode or Platform.STATIC )
 
+	self.door = nil
+
+	if self:getMode() == Platform.ENDING then
+		self.door = Animation:new( self.x + (self.width * 0.5) - 103, self.y - 413, 206, 413, 'images/door.png', 206, 413, 0 )
+		self.door:seek( 1 )
+		self.door:stop()
+		self.door.scaleX = self.scaleX
+		self.door.scaleY = self.scaleY
+	end
+
 	local bodyType = 'static'
-	if ( self.mode == 5 or self.mode == 6 or self.mode > 9 ) then
+	if self.mode == 5 or self.mode == 6 or self.mode > 9 then
 		bodyType = 'dynamic'
 	end
 
 	self.world = world
-	self.body = love.physics.newBody( self.world, self.x + (self.width * 0.5), self.y + (self.height * 0.5), 'static' )--self.width * 0.5, self.height * 0.5, 'static' )
+	self.body = love.physics.newBody( self.world, self.x + (self.width * 0.5), self.y + (self.height * 0.5), 'static' )
 	self.shape = love.physics.newRectangleShape( 0, 0, self.width, self.height )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 5 )
 	self.fixture:setUserData( 'platform-' .. types[ self:getMode() ] )
@@ -95,11 +106,21 @@ end
 function Platform:update( dt )
 	Image.update( self, dt )
 
+	if self.door ~= nil then
+		self.door:update( dt )
+	end
+
 	self.updates[ self:getMode() ]()
 end
 
 function Platform:draw()
-	--Image.draw( self )
+	love.graphics.setColor( 255, 255, 255, 255 )
+	Image.draw( self )
+
+	if self.door ~= nil then
+		self.door:draw()
+	end
+
 	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
 		love.graphics.setColor( 0, 255, 0 )
 	elseif self.mode == 7 or self.mode > 11 then

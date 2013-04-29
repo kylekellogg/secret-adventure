@@ -21,24 +21,20 @@ end
 function MainState:init()
 	self.background = Image:new( 0, 0, nil, nil, 'images/background.png' )
 
-	--love.physics.setMeter( 30 )
 	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
 	self.world:setCallbacks( self.beginContact, self.endContact, self.preSolve, self.postSolve )
 
-	--	Max jumping height is about  75px at  -750 force
-	--						  about 150px at -1000 force
-
 	self.platforms = {
-		Platform:new(   0,  60, Platform.STATIC, self.world ),
+		Platform:new(   0,  60, Platform.ENDING, self.world ),
 		Platform:new(  60, 120, Platform.STATIC, self.world ),
 		Platform:new( 120, 180, Platform.BOUNCING, self.world ),
 		Platform:new( 180, 240, Platform.STATIC, self.world ),
 		Platform:new( 240, 300, Platform.STATIC, self.world ),
 		Platform:new( 300, 360, Platform.SLIPPING, self.world ),
-		Platform:new( 420, 420, Platform.SLIPPING, self.world ),
+		Platform:new( 380, 420, Platform.SLIPPING, self.world, 80, 30 ),
+		Platform:new( 520, 480, Platform.STATIC, self.world, 80, 30 ),
 		Platform:new( 480, 540, Platform.STICKING, self.world ),
-		--Platform:new( 0, 592, Platform.STATIC, self.world ),
-		Platform:new( 15, 567, Platform.STATIC, self.world, 90, 30 ),
+		Platform:new( 400, 567, Platform.STATIC, self.world, 80, 30 ),
 		Platform:new( 0, 668, Platform.STATIC, self.world )
 	}
 
@@ -136,6 +132,8 @@ function MainState.beginContact( a, b, coll )
 		Signal.emit( 'player_sticking', 1.0 )
 	elseif atype == 'platform-bouncing' or atype == 'platform-moving-h-bouncing' or atype == 'platform-moving-v-bouncing' then
 		override = true
+	elseif atype == 'platform-ending' then
+		Signal.emit( 'switch_to_level_one' )
 	else
 	end
 

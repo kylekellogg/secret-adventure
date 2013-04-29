@@ -20,6 +20,8 @@ end
 function LevelTwoState:init()
   LevelState:init()
 
+  self.signal.emit( 'set_target_level', LevelState.LEVEL_THREE )
+
   local scW = love.graphics.getWidth()
   local scH = love.graphics.getHeight()
   local halfScW = scW / 2

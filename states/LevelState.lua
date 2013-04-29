@@ -7,21 +7,28 @@ require 'State'
 
 LevelState = class( "LevelState", State )
 
+LevelState.static.LEVEL_ONE = 'one'
+LevelState.static.LEVEL_TWO = 'two'
+LevelState.static.LEVEL_THREE = 'three'
+LevelState.static.LEVEL_FOUR = 'four'
+
 local Signal
 local override = false
 
+local target
+
 function LevelState:initialize( name, beetle, signal )
-  State.initialize( self, name, beetle, signal )
+ 	State.initialize( self, name, beetle, signal )
 
 	Signal = signal
 end
 
 --	Called only once
 function LevelState:init()
-  local scW = love.graphics.getWidth()
-  local scH = love.graphics.getHeight()
-  local halfScW = scW / 2
-  local halfScH = scH / 2
+	local scW = love.graphics.getWidth()
+	local scH = love.graphics.getHeight()
+	local halfScW = scW / 2
+	local halfScH = scH / 2
 
 	self.world = love.physics.newWorld( 0, 9.81 * 60, true )
 	self.world:setCallbacks( self.beginContact, self.endContact, self.preSolve, self.postSolve )
@@ -44,6 +51,10 @@ function LevelState:init()
 	bottomEdge.s = love.physics.newEdgeShape( 0, 0, love.graphics.getWidth(), 0 );
 	bottomEdge.f = love.physics.newFixture( bottomEdge.b, bottomEdge.s, 100 )
 	bottomEdge.f:setUserData( 'bottom' )
+
+	target = LevelState.LEVEL_ONE
+
+	Signal.register( 'set_target_level', function( t ) target = t end )
 end
 
 --	Called every time switch()ing to state
@@ -133,6 +144,9 @@ function LevelState.beginContact( a, b, coll )
 		bbody:applyLinearImpulse( x * 0.5, 0 )
 	elseif atype == 'platform-bouncing' or atype == 'platform-moving-h-bouncing' or atype == 'platform-moving-v-bouncing' then
 		override = true
+	elseif atype == 'platform-ending' then
+		print( 'target? ' .. target )
+		Signal.emit( 'switch_to_level_' .. target )
 	else
 	end
 end
