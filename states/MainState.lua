@@ -42,7 +42,7 @@ function MainState:init()
 		Platform:new( 0, 668, Platform.STATIC, self.world )
 	}
 
-	self.player = Player:new( 90, 0, 25, nil, self.world, self.signal )
+	self.player = Player:new( love.graphics.getWidth() * 0.5, love.graphics.getHeight() - 50, 25, nil, self.world, self.signal )
 
 	leftEdge = {}
 	leftEdge.b = love.physics.newBody( self.world, 0, -love.graphics.getHeight(), 'static' )
@@ -81,11 +81,11 @@ function MainState:update( dt )
 	end
 
 	if love.keyboard.isDown( 'a' ) or love.keyboard.isDown( 'left' ) then
-		self.player.body:applyForce( -1000 * self.player:getMassModifier(), 0 )
+		self.player.body:applyForce( self.player:getForceFor( -750 ), 0 )
 	end
 
 	if love.keyboard.isDown( 'd' ) or love.keyboard.isDown( 'right' ) then
-		self.player.body:applyForce( 1000 * self.player:getMassModifier(), 0 )
+		self.player.body:applyForce( self.player:getForceFor( 750 ), 0 )
 	end
 
 	self.player:update( dt )
@@ -107,7 +107,7 @@ function MainState:keypressed( key )
 	end
 
 	if key == 'r' then
-		self.player.body:setPosition( 90, 0 )
+		self.player.body:setPosition( love.graphics.getWidth() * 0.5, love.graphics.getHeight() - 50 )
 	end
 end
 
