@@ -65,6 +65,14 @@ end
 function Player:update( dt )
 	DisplayObject.update( self, dt )
 
+	if love.keyboard.isDown( 'a' ) or love.keyboard.isDown( 'left' ) then
+		self.body:applyForce( self:getForceFor( -750 ), 0 )
+	end
+
+	if love.keyboard.isDown( 'd' ) or love.keyboard.isDown( 'right' ) then
+		self.body:applyForce( self:getForceFor( 750 ), 0 )
+	end
+
 	local r, mm = self.shape:getRadius(), 1.0 + self:getMassModifier()
 	local sx = (r / self.anim.width) * mm
 	local sy = (r / self.anim.height) * mm

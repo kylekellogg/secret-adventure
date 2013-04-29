@@ -76,14 +76,6 @@ function MainState:update( dt )
 		end
 	end
 
-	if love.keyboard.isDown( 'a' ) or love.keyboard.isDown( 'left' ) then
-		self.player.body:applyForce( self.player:getForceFor( -750 ), 0 )
-	end
-
-	if love.keyboard.isDown( 'd' ) or love.keyboard.isDown( 'right' ) then
-		self.player.body:applyForce( self.player:getForceFor( 750 ), 0 )
-	end
-
 	self.player:update( dt )
 	self.world:update( dt )
 end

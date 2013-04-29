@@ -68,14 +68,6 @@ function LevelState:leave()
 end
 
 function LevelState:update( dt )
-	if love.keyboard.isDown( 'a' ) or love.keyboard.isDown( 'left' ) then
-		self.player.body:applyForce( -1000, 0 )
-	end
-
-	if love.keyboard.isDown( 'd' ) or love.keyboard.isDown( 'right' ) then
-		self.player.body:applyForce( 1000, 0 )
-	end
-
 	self.player:update( dt )
 end
 
