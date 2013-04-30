@@ -69,13 +69,6 @@ function MainState:leave()
 end
 
 function MainState:update( dt )
-	if self.player.dirty == true then
-		self.player.dirty = false
-		do
-			self.player:generateFixture()
-		end
-	end
-
 	self.player:update( dt )
 	self.world:update( dt )
 end

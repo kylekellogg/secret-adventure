@@ -28,7 +28,7 @@ function Player:initialize( x, y, width, height, world, signal )
 
 	self.world = world
 	self.body = love.physics.newBody( self.world, self.x, self.y, 'dynamic' )
-	self.body:setLinearDamping( 0.5 )
+	self.body:setLinearDamping( 1 )
 	self:generateFixture()
 
 	self.previousY = self.body:getY()
@@ -64,6 +64,13 @@ end
 
 function Player:update( dt )
 	DisplayObject.update( self, dt )
+
+	if self.dirty == true then
+		self.dirty = false
+		do
+			self:generateFixture()
+		end
+	end
 
 	if love.keyboard.isDown( 'a' ) or love.keyboard.isDown( 'left' ) then
 		self.body:applyForce( self:getForceFor( -750 ), 0 )
