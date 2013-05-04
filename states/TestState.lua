@@ -2,10 +2,9 @@ require 'libs/middleclass'
 
 require 'view/Image'
 require 'view/Animation'
+require 'view/Splatter'
 
-require 'Splatter'
-
-require 'State'
+require 'states/State'
 
 TestState = class( 'TestState', State )
 
@@ -53,10 +52,10 @@ end
 
 function TestState:keyreleased( key )
 	if key == 'm' then
-		self.signal.emit( 'switch_to_menu' )
+		self.signal.emit( 'set_state', State.MAIN )
 	end
 
 	if ( key == '1' ) then
-		self.signal.emit( 'switch_to_level_one' )
+		self.signal.emit( 'set_state', State.LEVEL_ONE )
 	end
 end

@@ -122,13 +122,13 @@ function Platform:draw()
 	end
 
 	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
-		love.graphics.setColor( 0, 255, 0 )
+		love.graphics.setColor( 0, 255, 0, 255 )
 	elseif self.mode == 7 or self.mode > 11 then
-		love.graphics.setColor( 0, 0, 255 )
+		love.graphics.setColor( 0, 0, 255, 255 )
 	elseif self.mode == 8 then
-		love.graphics.setColor( 255, 255, 0 )
+		love.graphics.setColor( 255, 255, 0, 255 )
 	else
-		love.graphics.setColor( 255, 0, 0 )
+		love.graphics.setColor( 255, 0, 0, 255 )
 	end
 	love.graphics.polygon( 'fill', self.body:getWorldPoints( self.shape:getPoints() ) )
 end

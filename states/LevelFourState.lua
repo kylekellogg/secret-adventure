@@ -1,69 +1,39 @@
 require 'libs/middleclass'
 
-require 'view/Image'
-require 'view/Platform'
-
 require 'states/LevelState'
 
-LevelFourState = class( "LevelFourState", LevelState )
-
-local Signal
-local override = false
+LevelFourState = class( 'LevelFourState', LevelState )
 
 function LevelFourState:initialize( name, beetle, signal )
-  LevelState.initialize( self, name, beetle, signal )
-
-	Signal = signal
+	LevelState.initialize( self, name, beetle, signal )
 end
 
---	Called only once
 function LevelFourState:init()
-  LevelState:init()
+	LevelState.init( self )
 
-  self.signal.emit( 'set_target_level', LevelState.LEVEL_ONE )
+	local scH = love.graphics.getHeight()
+	local scW = love.graphics.getWidth()
+	local halfScW = scW / 2
+	local halfScH = scH / 2
 
-  local scW = love.graphics.getWidth()
-  local scH = love.graphics.getHeight()
-  local halfScW = scW / 2
-  local halfScH = scH / 2
-
-	self.platforms = {
-    Platform:new( halfScW - 30, scH - 105, Platform.STATIC, self.world, 60 ),
-    Platform:new( halfScW - 30, scH - 210, Platform.STATIC, self.world, 60 ),
-    Platform:new( halfScW - 30, scH - 315, Platform.STATIC, self.world, 60 ),
-    Platform:new( halfScW + 90, scH - 420, Platform.MOVING_H, self.world, 90 ),
-    Platform:new( halfScW - 180, scH - 420, Platform.MOVING_H, self.world, 90 ),
-    Platform:new( 0, scH - 520, Platform.STATIC, self.world, 60 ),
-    Platform:new( scW - 60, scH - 520, Platform.STATIC, self.world, 60 ),
-    Platform:new( halfScW + 90, scH - 620, Platform.MOVING_V, self.world, 90 ),
-    Platform:new( halfScW - 180, scH - 620, Platform.MOVING_V, self.world, 90 ),
-    Platform:new( 0, scH - 875, Platform.STATIC, self.world ),
-    Platform:new( scW - 120, scH - 875, Platform.STATIC, self.world ),
-    Platform:new( halfScW - 60, scH - 975, Platform.ENDING, self.world ),
-	}
+	self:addPlatform( halfScW - 30, scH - 105, Platform.STATIC, 60 )
+	self:addPlatform( halfScW - 30, scH - 210, Platform.STATIC, 60 )
+	self:addPlatform( halfScW - 30, scH - 315, Platform.STATIC, 60 )
+	self:addPlatform( halfScW + 90, scH - 420, Platform.MOVING_H, 90 )
+	self:addPlatform( halfScW - 180, scH - 420, Platform.MOVING_H, 90 )
+	self:addPlatform( 0, scH - 520, Platform.STATIC, 60 )
+	self:addPlatform( scW - 60, scH - 520, Platform.STATIC, 60 )
+	self:addPlatform( halfScW + 90, scH - 620, Platform.MOVING_V, 90 )
+	self:addPlatform( halfScW - 180, scH - 620, Platform.MOVING_V, 90 )
+	self:addPlatform( 0, scH - 875, Platform.STATIC )
+	self:addPlatform( scW - 120, scH - 875, Platform.STATIC )
+	self:addPlatform( halfScW - 60, scH - 975, Platform.ENDING )
 end
 
---	Called every time switch()ing to state
-function LevelFourState:enter( previous )
-	--	
-end
-
---	Called every time switch()ing away from state
-function LevelFourState:leave()
-	-- 
-end
-
-function LevelFourState:update( dt )
-  LevelState:update( dt )
-	self.world:update( dt )
-end
-
-function LevelFourState:draw()
-	for _,p in pairs(self.platforms) do
-		p:draw()
-	end
-
-  LevelState:draw()
+function LevelFourState:enter()
+	LevelState.enter( self )
+	
+	self.signal.emit( 'set_target', State.TEST )
 end
 
 function LevelFourState:keypressed( key )
