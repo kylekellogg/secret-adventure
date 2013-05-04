@@ -53,9 +53,13 @@ end
 function TestState:keyreleased( key )
 	if key == 'm' then
 		self.signal.emit( 'set_state', State.MAIN )
-	end
-
-	if ( key == '1' ) then
+	elseif ( key == '1' ) then
 		self.signal.emit( 'set_state', State.LEVEL_ONE )
+	elseif ( key == '2' ) then
+		self.signal.emit( 'set_state', State.LEVEL_TWO )
+	elseif ( key == '3' ) then
+		self.signal.emit( 'set_state', State.LEVEL_THREE )
+	elseif ( key == '4' ) then
+		self.signal.emit( 'set_state', State.LEVEL_FOUR )
 	end
 end

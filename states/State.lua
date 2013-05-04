@@ -60,6 +60,10 @@ function State:update( dt )
 	end
 	self.world:update( dt )
 
+	for _,p in pairs(self.platforms) do
+		p:update( dt )
+	end
+
 	if self.player == nil then return end
 
 	if love.keyboard.isDown( 'w' ) or love.keyboard.isDown( 'up' ) then
@@ -216,11 +220,14 @@ function State.beginContact( a, b, coll )
 	end
 
 	if atype == 'platform-slipping' or atype == 'platform-moving-h-slipping' or atype == 'platform-moving-v-slipping' then
+		override = true
 		Signal.emit( 'player_sticking', 0.0 )
 	elseif atype == 'platform-sticking' then
 		loseMassMultiplier = 1.5
 		Signal.emit( 'player_sticking', 1.0 )
 	elseif atype == 'platform-bouncing' or atype == 'platform-moving-h-bouncing' or atype == 'platform-moving-v-bouncing' then
+		override = true
+	elseif atype == 'platform-moving-h' or atype == 'platform-moving-v' then
 		override = true
 	elseif atype == 'platform-ending' then
 		--	Set flag so that, before next world update, callers are removed, the state is switched, and callers are then added again

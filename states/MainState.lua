@@ -27,6 +27,7 @@ function MainState:init()
 	self:addPlatform( 480, 540, Platform.STICKING )
 	self:addPlatform( 400, 567, Platform.STATIC, 80, 30 )
 	self:addPlatform(   0, 668, Platform.STATIC )
+	self:addPlatform( love.graphics.getWidth() * 0.5 - 40, love.graphics.getHeight() - 30, Platform.MOVING_H, 80, 30 )
 end
 
 function MainState:enter()

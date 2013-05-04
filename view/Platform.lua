@@ -26,6 +26,9 @@ function Platform:initialize( x, y, mode, world, width, height )
 	self.scaleX = self.width / self._image:getWidth()
 	self.scaleY = self.height / self._image:getHeight()
 
+	self.timeAlive = 0
+	self.frameCounter = 0
+
 	local types = {
 		'static',
 		'bouncing',
@@ -42,33 +45,55 @@ function Platform:initialize( x, y, mode, world, width, height )
 		'moving-v-slipping'
 	}
 
+	self._movement = 100;
+
 	self.updates = {
 		--	STATIC
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	BOUNCING
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	CLEANING
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	ENDING
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	MOVING_H
-		function() return types[ self:getMode() ] end,
+		function( dt )
+			self.body:setX( self.x + self._movement * math.sin( self.timeAlive ) )
+			return types[ self:getMode() ]
+		end,
 		--	MOVING_V
-		function() return types[ self:getMode() ] end,
+		function( dt )
+			self.body:setY( self.y + self._movement * math.sin( self.timeAlive ) )
+			return types[ self:getMode() ]
+		end,
 		--	SLIPPING
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	STICKING
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	TELEPORTING
-		function() return types[ self:getMode() ] end,
+		function( dt ) return types[ self:getMode() ] end,
 		--	MOVING_H_BOUNCING
-		function() return types[ self:getMode() ] end,
+		--	MOVING_H
+		function( dt )
+			self.body:setX( self.x + self._movement * math.sin( self.timeAlive ) )
+			return types[ self:getMode() ]
+		end,
 		--	MOVING_V_BOUNCING
-		function() return types[ self:getMode() ] end,
+		function( dt )
+			self.body:setY( self.y + self._movement * math.sin( self.timeAlive ) )
+			return types[ self:getMode() ]
+		end,
 		--	MOVING_H_SLIPPING
-		function() return types[ self:getMode() ] end,
+		--	MOVING_H
+		function( dt )
+			self.body:setX( self.x + self._movement * math.sin( self.timeAlive ) )
+			return types[ self:getMode() ]
+		end,
 		--	MOVING_V_BOUNCING
-		function() return types[ self:getMode() ] end
+		function( dt )
+			self.body:setY( self.y + self._movement * math.sin( self.timeAlive ) )
+			return types[ self:getMode() ]
+		end
 	}
 
 	self:setMode( mode or Platform.STATIC )
@@ -83,16 +108,16 @@ function Platform:initialize( x, y, mode, world, width, height )
 		self.door.scaleY = self.scaleY
 	end
 
-	local bodyType = 'static'
-	if self.mode == 5 or self.mode == 6 or self.mode > 9 then
-		bodyType = 'dynamic'
-	end
-
 	self.world = world
 	self.body = love.physics.newBody( self.world, self.x + (self.width * 0.5), self.y + (self.height * 0.5), 'static' )
 	self.shape = love.physics.newRectangleShape( 0, 0, self.width, self.height )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 5 )
+	self.fixture:setFriction( 100 )
 	self.fixture:setUserData( 'platform-' .. types[ self:getMode() ] )
+
+	-- if bodyType == 'dynamic' then
+	-- 	self.body:setGravityScale( 0 )
+	-- end
 
 	if self.mode == 2 or self.mode == 10 or self.mode == 11 then
 		self.fixture:setRestitution( 1.0 )
@@ -110,7 +135,10 @@ function Platform:update( dt )
 		self.door:update( dt )
 	end
 
-	self.updates[ self:getMode() ]()
+	self.frameCounter = self.frameCounter + 1
+	self.timeAlive = self.timeAlive + dt
+
+	do self.updates[ self:getMode() ]( dt ) end
 end
 
 function Platform:draw()
