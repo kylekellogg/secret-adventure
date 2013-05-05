@@ -12,6 +12,7 @@ local grounded = false
 local target
 local removeCallbacks = false
 local destroyWorld = false
+local Platforms
 
 State.static.TEST = 'test'
 State.static.MAIN = 'main'
@@ -25,6 +26,7 @@ function State:initialize( name, beetle, signal )
 	self.beetle = beetle
 	self.signal = signal
 
+	Platforms = {}
 	self.platforms = {}
 
 	self.startPosition = {
@@ -106,6 +108,7 @@ end
 
 function State:leave()
 	for i in pairs(self.platforms) do
+		Platforms[i] = nil
 		self.platforms[i] = nil
 	end
 end
@@ -141,6 +144,7 @@ function State:generateWorld( xgrav, ygrav, sleep )
 	local oldPlatforms = {}
 	for i,p in pairs(self.platforms) do
 		oldPlatforms[i] = p
+		Platforms[i] = nil
 		self.platforms[i] = nil
 	end
 
@@ -194,7 +198,9 @@ function State:generateEdges( scale )
 end
 
 function State:addPlatform( x, y, type, width, height )
-	table.insert( self.platforms, Platform:new( x, y, type or Platform.STATIC, self.world, width, height ) )
+	local platform = Platform:new( x, y, type or Platform.STATIC, self.world, width, height )
+	table.insert( self.platforms, platform )
+	table.insert( Platforms, platform )
 end
 
 --	Collision detection
@@ -233,6 +239,14 @@ function State.beginContact( a, b, coll )
 		--	Set flag so that, before next world update, callers are removed, the state is switched, and callers are then added again
 		removeCallbacks = true
 	else
+	end
+
+	for _,p in pairs( Platforms ) do
+		if p:hasFixture( a ) then
+			local x1,y1,x2,y2 = coll:getPositions()
+			p:addMarking( x1,y1 )
+			break
+		end
 	end
 
 	if loseMass == true then

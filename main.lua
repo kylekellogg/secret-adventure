@@ -37,6 +37,7 @@ function love.update( dt )
 end
 
 function love.draw()
+	love.graphics.setCaption( 'Secret Adventure!' )
 	Gamestate.draw()
 	beetle.draw()
 end

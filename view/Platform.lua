@@ -1,5 +1,7 @@
 require 'libs/middleclass'
 
+Vector = require 'libs/hump/vector'
+
 require 'view/Animation'
 require 'view/Image'
 
@@ -28,6 +30,12 @@ function Platform:initialize( x, y, mode, world, width, height )
 
 	self.timeAlive = 0
 	self.frameCounter = 0
+
+	self._markings = {}
+	self._prevPosition = Vector(0,0)
+	self._movementDelta = Vector(0,0)
+	self.marking = Image:new( 0, 0, 0, 0, 'images/marking.png' );
+	self.mquad = love.graphics.newQuad( 0, 0, 25, 25, 25, 25 );
 
 	local types = {
 		'static',
@@ -58,12 +66,20 @@ function Platform:initialize( x, y, mode, world, width, height )
 		function( dt ) return types[ self:getMode() ] end,
 		--	MOVING_H
 		function( dt )
+			local oldX = self.body:getX()
 			self.body:setX( self.x + self._movement * math.sin( self.timeAlive ) )
+			for _,v in pairs( self._markings ) do
+				v.x = v.x - (oldX - self.body:getX())
+			end
 			return types[ self:getMode() ]
 		end,
 		--	MOVING_V
 		function( dt )
+			local oldY = self.body:getY()
 			self.body:setY( self.y + self._movement * math.sin( self.timeAlive ) )
+			for _,v in pairs( self._markings ) do
+				v.y = v.y - (oldY - self.body:getY())
+			end
 			return types[ self:getMode() ]
 		end,
 		--	SLIPPING
@@ -75,23 +91,39 @@ function Platform:initialize( x, y, mode, world, width, height )
 		--	MOVING_H_BOUNCING
 		--	MOVING_H
 		function( dt )
+			local oldX = self.body:getX()
 			self.body:setX( self.x + self._movement * math.sin( self.timeAlive ) )
+			for _,v in pairs( self._markings ) do
+				v.x = v.x - (oldX - self.body:getX())
+			end
 			return types[ self:getMode() ]
 		end,
 		--	MOVING_V_BOUNCING
 		function( dt )
+			local oldY = self.body:getY()
 			self.body:setY( self.y + self._movement * math.sin( self.timeAlive ) )
+			for _,v in pairs( self._markings ) do
+				v.y = v.y - (oldY - self.body:getY())
+			end
 			return types[ self:getMode() ]
 		end,
 		--	MOVING_H_SLIPPING
 		--	MOVING_H
 		function( dt )
+			local oldX = self.body:getX()
 			self.body:setX( self.x + self._movement * math.sin( self.timeAlive ) )
+			for _,v in pairs( self._markings ) do
+				v.x = v.x - (oldX - self.body:getX())
+			end
 			return types[ self:getMode() ]
 		end,
 		--	MOVING_V_BOUNCING
 		function( dt )
+			local oldY = self.body:getY()
 			self.body:setY( self.y + self._movement * math.sin( self.timeAlive ) )
+			for _,v in pairs( self._markings ) do
+				v.y = v.y - (oldY - self.body:getY())
+			end
 			return types[ self:getMode() ]
 		end
 	}
@@ -159,6 +191,29 @@ function Platform:draw()
 		love.graphics.setColor( 255, 0, 0, 255 )
 	end
 	love.graphics.polygon( 'fill', self.body:getWorldPoints( self.shape:getPoints() ) )
+
+	local stencilFunction = function()
+		love.graphics.polygon( 'fill', self.body:getWorldPoints( self.shape:getPoints() ) )
+	end
+
+	love.graphics.setStencil( stencilFunction )
+	love.graphics.setColor( 0, 0, 0, 255 )
+	for _,v in pairs( self._markings ) do
+		love.graphics.drawq( self.marking:getRawImage(), self.mquad, v.x - 12.5, v.y - 12.5 )
+	end
+	love.graphics.setInvertedStencil( stencilFunction )
+end
+
+function Platform:stencilFunction( x1, y1, x2, y2, ... )
+	love.graphics.polygon( 'fill', x1, y1, x2, y2, ... )
+end
+
+function Platform:addMarking( x, y )
+	table.insert( self._markings, Vector( self.body:getLocalVector( x, y ) ) )
+end
+
+function Platform:hasFixture( fixture )
+	return fixture == self.fixture;
 end
 
 function Platform:setMode( mode )

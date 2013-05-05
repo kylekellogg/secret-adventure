@@ -20,6 +20,10 @@ function Image:draw()
 	love.graphics.draw( self._image, self.x, self.y, math.rad( self.rotation ), self.scaleX, self.scaleY, 0, 0 )
 end
 
+function Image:getRawImage()
+	return self._image
+end
+
 function Image:__tostring()
 	return 'Image (' .. src .. '): {' .. tostring( self.x ) .. ', ' .. tostring( self.y ) .. '} sized ' .. tostring( self.width ) .. ', ' .. tostring( self.height )
 end

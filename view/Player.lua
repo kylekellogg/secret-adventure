@@ -46,7 +46,7 @@ function Player:initialize( x, y, width, height, world, signal )
 			else
 				jump = self:getForceFor( -200 )
 			end
-
+			
 			self.body:applyLinearImpulse( 0, jump )
 		end
 	end )
