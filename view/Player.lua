@@ -113,11 +113,11 @@ end
 function Player:draw()
 	DisplayObject.draw( self )
 
-	love.graphics.setColor( 255, 0, 0, 255 )
-	love.graphics.circle( 'line', self.body:getX(), self.body:getY(), originalRadius )
+	-- love.graphics.setColor( 255, 0, 0, 255 )
+	-- love.graphics.circle( 'line', self.body:getX(), self.body:getY(), originalRadius )
 
-	love.graphics.setColor( 0, 0, 0, 255 )
-	love.graphics.circle( 'fill', self.body:getX(), self.body:getY(), self.shape:getRadius() )
+	-- love.graphics.setColor( 0, 0, 0, 255 )
+	-- love.graphics.circle( 'fill', self.body:getX(), self.body:getY(), self.shape:getRadius() )
 
 	love.graphics.setColor( 255, 255, 255, 255 )
 	self.anim:draw()
