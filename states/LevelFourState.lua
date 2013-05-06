@@ -33,29 +33,5 @@ end
 function LevelFourState:enter()
 	LevelState.enter( self )
 	
-	self.signal.emit( 'set_target', State.TEST )
-end
-
-function LevelFourState:keypressed( key )
-  LevelState.keypressed( self, key )
-
-	if ( key == 'i' ) then
-    self:cameraUp()
-	end
-
-	if ( key == 'k' ) then
-    self:cameraDown()
-	end
-end
-
-function LevelFourState:cameraUp()
-  for _,p in pairs(self.platforms) do
-    p.body:setY(p.body:getY() + 10)
-  end
-end
-
-function LevelFourState:cameraDown()
-  for _,p in pairs(self.platforms) do
-    p.body:setY(p.body:getY() - 10)
-  end
+	self.signal.emit( 'set_target', State.LEVEL_ONE )
 end

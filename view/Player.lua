@@ -12,6 +12,8 @@ local originalRadius
 local originalMass
 local mult
 
+local cam
+
 function Player:initialize( x, y, width, height, world, signal )
 	DisplayObject.initialize( self, x, y, width, height )
 

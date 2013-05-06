@@ -29,7 +29,7 @@ function love.load()
 		Gamestate.switch( States:get( s ) )
 	end )
 	
-	Gamestate.switch( States:get( State.TEST ) )
+	Gamestate.switch( States:get( State.LEVEL_FOUR ) )
 end
 
 function love.update( dt )

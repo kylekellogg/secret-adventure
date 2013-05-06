@@ -1,5 +1,7 @@
 require 'libs/middleclass'
 
+Camera = require 'libs/hump/camera'
+
 require 'view/Platform'
 require 'view/Player'
 
@@ -34,7 +36,11 @@ function State:initialize( name, beetle, signal )
 		y = love.graphics.getHeight() * 0.5
 	}
 
+	self.relativeY = self.startPosition.y
+
 	self.index = 1
+
+	self.cam = Camera( self.startPosition.x, self.startPosition.y, 1, 0 )
 
 	target = State.MAIN
 
@@ -75,6 +81,13 @@ function State:update( dt )
 	end
 
 	self.player:update( dt )
+
+	local relY = self.bottomEdge.b:getY() - self.player.body:getY()
+	if relY > self.startPosition.y then
+		local cx, cy = self.cam:pos()
+		self.cam:move( 0, self.relativeY - relY )
+	end
+	self.relativeY = relY
 end
 
 function State:draw()
@@ -82,11 +95,13 @@ function State:draw()
 		destroyWorld = false
 		return
 	else
+		self.cam:attach()
 		for _,p in pairs(self.platforms) do
 			p:draw()
 		end
 
 		self.player:draw()
+		self.cam:detach()
 	end
 end
 
