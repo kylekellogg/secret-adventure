@@ -14,6 +14,7 @@ require 'states/LevelFourState'
 
 function love.load()
 	love.graphics.setBackgroundColor( 255, 255, 255 )
+	love.graphics.setCaption( 'Secret Adventure!' )
 	
 	beetle.load()
 	beetle.setKey( 'x' )
@@ -29,7 +30,7 @@ function love.load()
 		Gamestate.switch( States:get( s ) )
 	end )
 	
-	Gamestate.switch( States:get( State.LEVEL_FOUR ) )
+	Gamestate.switch( States:get( State.LEVEL_ONE ) )
 end
 
 function love.update( dt )
@@ -37,7 +38,6 @@ function love.update( dt )
 end
 
 function love.draw()
-	love.graphics.setCaption( 'Secret Adventure!' )
 	Gamestate.draw()
 	beetle.draw()
 end
